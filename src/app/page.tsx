@@ -27,7 +27,7 @@ export default function Home() {
     }
 
     // 🔍 1. Send news to backend model
-    const modelResponse = await fetch("http://localhost:5000/predict", {
+    const modelResponse = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/predict`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

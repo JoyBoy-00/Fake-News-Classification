@@ -22,4 +22,9 @@ vecs = vectorizer.transform(texts)
 preds = model.predict(vecs)
 
 # Return predictions
-print(json.dumps({"predictions": preds.tolist()}))
+# Replace this line
+# print(json.dumps({"predictions": preds.tolist()}))
+
+# With this
+labels = ["FAKE" if p == 0 else "REAL" for p in preds]
+print(json.dumps({"predictions": labels}))

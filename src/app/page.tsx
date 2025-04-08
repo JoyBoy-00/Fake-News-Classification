@@ -30,6 +30,8 @@ export default function Home() {
 
     const modelData = await modelResponse.json();
     const modelPrediction = modelData.predictions?.[0] || "Unknown";
+    console.log("modelData:", modelData);
+    console.log("modelPrediction:", modelPrediction);
 
     // 🎯 2. Send news to Gemini for categorization
     const geminiKey = process.env.NEXT_PUBLIC_GEMINI_KEY;

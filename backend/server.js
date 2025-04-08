@@ -9,7 +9,7 @@ const PORT = process.env.PORT || 5000;
 // Add this before routes
 app.use(
   cors({
-    origin: `${process.env.NEXT_PUBLIC_BACKEND_URL}`, // your frontend domain
+    origin: `${process.env.NEXT_PUBLIC_FRONTEND_URL}`, // your frontend domain
     methods: ["GET", "POST"],
     credentials: true,
   })

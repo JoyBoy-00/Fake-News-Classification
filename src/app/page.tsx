@@ -9,6 +9,7 @@ export default function Home() {
     category: string;
   }>(null);
   const [darkMode, setDarkMode] = useState(false);
+  const [enrichedNews, setEnrichedNews] = useState<any[]>([]);
   const newsInputRef = useRef<HTMLTextAreaElement>(null);
 
   const handlePrediction = async () => {
@@ -69,13 +70,74 @@ export default function Home() {
       accuracy: `The news is ${accuracy}% real`,
       category: geminiOutput,
     });
+
+    // 📰 3. Fetch top 5 articles from NewsAPI and analyze with Gemini
+    const newsApiKey = process.env.NEXT_PUBLIC_NEWSAPI_KEY;
+    console.log("🧪 News API Key:", newsApiKey);
+
+    if (!newsApiKey) {
+      console.error("🚨 Missing NewsAPI key. Check .env.local and NEXT_PUBLIC_NEWSAPI_KEY");
+      return;
+    }
+
+    const newsResponse = await fetch(
+      `https://newsapi.org/v2/top-headlines?country=us&pageSize=5&apiKey=${newsApiKey}`
+    );
+    const newsData = await newsResponse.json();
+
+    if (!newsData.articles) {
+      console.error("🚨 No articles returned from NewsAPI", newsData);
+      return;
+    }
+
+    const enriched = await Promise.all(
+      newsData.articles.map(async (article: any) => {
+        const title = article.title || "";
+        const content = article.content || article.description || "";
+        const fullText = `${title}. ${content}`;
+
+        const geminiRes = await fetch(
+          `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${geminiKey}`,
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              contents: [
+                {
+                  parts: [
+                    {
+                      text: `Given this article content: \"${fullText}\", \nUser input was: \"${newsInput}\", and model predicted: \"${modelPrediction}\",\nClassify it (Political, Historical, Geographical, Sports, Other) and estimate fakeness percentage. \nReply: Category: <category>. Fakeness: <percent>%`,
+                    },
+                  ],
+                },
+              ],
+            }),
+          }
+        );
+
+        const geminiJson = await geminiRes.json();
+        const outputText =
+          geminiJson?.candidates?.[0]?.content?.parts?.[0]?.text || "";
+
+        const categoryMatch = outputText.match(/Category:\s*(\w+)/i);
+        const fakenessMatch = outputText.match(/Fakeness:\s*(\d+)%/i);
+
+        return {
+          title,
+          content,
+          geminiCategory: categoryMatch?.[1] || "Unknown",
+          fakeness: fakenessMatch?.[1] || "Unknown",
+        };
+      })
+    );
+
+    setEnrichedNews(enriched);
   };
 
   return (
     <div
-      className={`min-h-screen py-12 px-4 ${
-        darkMode ? "bg-zinc-900 text-white" : "bg-white text-black"
-      } transition-colors`}
+      className={`min-h-screen py-12 px-4 ${darkMode ? "bg-zinc-900 text-white" : "bg-white text-black"
+        } transition-colors`}
     >
       <div className="max-w-xl mx-auto text-center space-y-6">
         <h1 className="text-3xl font-bold">Fake News Prediction</h1>
@@ -86,9 +148,8 @@ export default function Home() {
         <textarea
           ref={newsInputRef}
           placeholder="Enter the news here..."
-          className={`w-full h-32 p-4 rounded-lg border border-gray-300 dark:border-gray-600 ${
-            darkMode ? "bg-zinc-800 text-white" : "bg-zinc-100 text-black"
-          } focus:outline-none`}
+          className={`w-full h-32 p-4 rounded-lg border border-gray-300 dark:border-gray-600 ${darkMode ? "bg-zinc-800 text-white" : "bg-zinc-100 text-black"
+            } focus:outline-none`}
         />
 
         <button
@@ -101,11 +162,10 @@ export default function Home() {
         {result && (
           <div className="mt-8 space-y-4">
             <h2
-              className={`text-2xl font-semibold ${
-                result.text === "FAKE" ? "text-red-500" : "text-green-400"
-              }`}
+              className={`text-2xl font-semibold ${result.text === "FAKE" ? "text-red-500" : "text-green-400"
+                }`}
             >
-              {result.text} - {result.category}
+              {result.text}
             </h2>
 
             <div className="w-full bg-gray-300 dark:bg-gray-700 h-4 rounded-md overflow-hidden">
@@ -132,6 +192,26 @@ export default function Home() {
                 Fake
               </button>
             </div>
+
+            {enrichedNews.length > 0 && (
+              <div className="mt-10 space-y-4 text-left">
+                <h3 className="text-xl font-semibold">Top 5 News Analysis</h3>
+                {enrichedNews.map((item, index) => (
+                  <div
+                    key={index}
+                    className="border p-4 rounded-md shadow bg-zinc-50 dark:bg-zinc-800"
+                  >
+                    <h4 className="font-bold">{item.title}</h4>
+                    <p className="text-sm text-gray-600 dark:text-gray-400">
+                      {item.content}
+                    </p>
+                    <p className="text-sm mt-1">
+                      Category: <strong>{item.geminiCategory}</strong>, Fakeness: <strong>{item.fakeness}%</strong>
+                    </p>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         )}
 

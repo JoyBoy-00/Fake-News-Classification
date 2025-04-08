@@ -1,8 +1,12 @@
 "use client";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 
 // import { console } from "inspector";
-import { useState, useRef } from "react";
+import { useState, useRef  } from "react";
+import React from "react";
 // import { text } from "stream/consumers";
+import Image from "next/image";
 
 export default function Home() {
   const [result, setResult] = useState<null | {
@@ -240,7 +244,7 @@ export default function Home() {
                     className="border rounded-lg p-4 shadow-md dark:shadow-none bg-zinc-50 dark:bg-zinc-800 transition-all flex gap-4"
                   >
                     {item.imageUrl && (
-                      <img
+                      <Image
                         src={item.imageUrl}
                         alt="news"
                         className="w-28 h-28 object-cover rounded-md"

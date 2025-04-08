@@ -39,6 +39,7 @@ export default function Home() {
     const modelPrediction = modelData.predictions?.[0] || "Unknown";
     console.log("modelData:", modelData);
     console.log("modelPrediction:", modelPrediction);
+    
 
     // 🎯 2. Send news to Gemini for categorization
     const geminiKey = process.env.NEXT_PUBLIC_GEMINI_KEY;
@@ -72,8 +73,6 @@ export default function Home() {
 
     // 📰 3. Fetch top 5 articles from NewsAPI and analyze with Gemini
     const newsApiKey = process.env.NEXT_PUBLIC_NEWSAPI_KEY;
-    console.log("🧪 News API Key:", newsApiKey);
-
     if (!newsApiKey) {
       console.error("🚨 Missing NewsAPI key. Check .env.local and NEXT_PUBLIC_NEWSAPI_KEY");
       return;

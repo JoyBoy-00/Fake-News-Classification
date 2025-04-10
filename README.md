@@ -4,7 +4,7 @@ A full-stack web app that classifies news articles as **REAL** or **FAKE** using
 
 ## 🔗 Live Demo
 
--  [https://fake-news-classification.vercel.app](https://fake-news-classification.vercel.app.com)  
+-  [fake-news-classification](https://fake-news-classification.vercel.app/)  
 
 ---
 

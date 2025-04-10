@@ -1,41 +1,90 @@
-<<<<<<< HEAD
-# Fake-News-Classification
-ml project
-=======
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 📰 Fake News Detection App
 
-## Getting Started
+A full-stack web app that classifies news articles as **REAL** or **FAKE** using multiple ML models, integrated with a modern Next.js frontend and a Python-powered Node.js backend.
 
-First, run the development server:
+## 🔗 Live Demo
+
+-  [https://fake-news-classification.vercel.app](https://fake-news-classification.vercel.app.com)  
+
+---
+
+## 🧠 Features
+
+- Fake news classification using multiple ML models (Logistic Regression, Naive Bayes, SVM, Random Forest, XGBoost)
+- Ensemble majority voting
+- Input text cleaning and vectorization
+- Gemini-based second-opinion API support (optional)
+- News API integration (optional)
+- Built with Next.js frontend + Express.js backend (Python subprocess for ML)
+- ✅ Deployed FREE on **Vercel (frontend)** and **Render (backend)**
+
+---
+
+## 🧠 Machine Learning
+
+- Models trained on a labeled dataset (`FAKE` vs `REAL`)
+- Includes:
+  - Logistic Regression
+  - Naive Bayes
+  - SVM
+  - Random Forest
+  - XGBoost
+- Preprocessed with `TfidfVectorizer`
+
+---
+
+## 🛠 Tech Stack
+
+- **Frontend:** Next.js, Tailwind CSS
+- **Backend:** Node.js (Express), Python (Scikit-learn, XGBoost)
+- **Deployment:** Vercel (frontend), Render (backend)
+- **Other Tools:** NewsAPI, Gemini API, TF-IDF vectorizer, Pickle, CORS
+
+---
+
+## 🧪 How to Run Locally
+
+## Clone the repository:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/JoyBoy-00/Fake-News-Classification.git
+cd Fake-News-Classification/
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## ⚙️ Backend (Node.js + Python)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Setup locally
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+cd backend
+npm install
+python3 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+node server.js
+```
 
-## Learn More
+## ⚙️ Backend (Node.js + Python)
 
-To learn more about Next.js, take a look at the following resources:
+### Setup locally
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+cd ..
+npm install
+npm run dev
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+## 👥 Contributors
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- [JoyBoy-00](https://github.com/JoyBoy-00)
+- [kunal-saw](https://github.com/kunal-saw)
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
->>>>>>> 7f8851e (Initial commit from Create Next App)
+---
+
+## 📄 License
+
+This project is licensed under the [MIT License](LICENSE).
+
+

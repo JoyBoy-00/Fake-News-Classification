@@ -6,14 +6,13 @@ const cors = require("cors");
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// Add this before routes
-app.use(
-  cors({
-    origin: `${process.env.NEXT_PUBLIC_FRONTEND_URL}`, // your frontend domain
-    methods: ["GET", "POST"],
-    credentials: true,
-  })
-);
+app.use(cors({
+  origin: process.env.NEXT_PUBLIC_FRONTEND_URL,
+  methods: ["GET", "POST", "OPTIONS"],
+  allowedHeaders: ["Content-Type"]
+}));
+
+app.options("*", cors());
 app.use(bodyParser.json());
 
 app.post("/predict", (req, res) => {
